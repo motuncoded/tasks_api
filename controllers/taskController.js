@@ -1,6 +1,5 @@
 // Task Controller
 
-
 const taskModel = require("../models/taskModel");
 
 // Create a task
@@ -19,17 +18,17 @@ const create_a_task = async (req, res, next) => {
 // Get a task
 const get_a_task = async (req, res, next) => {
   const { id } = req.params;
-  const { category, deadline } = req.body;
   const userId = req.user._id;
 
   try {
-    // Find the book by ID
+    // Find the task by ID
     const getTask = await taskModel.findOne({ _id: id, user: userId }); //Ensuring the user can only access their own task
     if (!getTask) {
       return res
         .status(404)
         .json({ message: "Task not found with the provided ID" });
     }
+
     res.status(200).json({ getTask, message: "Task found successfully" });
   } catch (error) {
     next(error);
@@ -38,14 +37,27 @@ const get_a_task = async (req, res, next) => {
 
 const get_all_tasks = async (req, res, next) => {
   const userId = req.user._id;
+  const { category } = req.query;
+
   try {
-    const tasks = await taskModel.find({ user: userId });
-    if (tasks.length === 0) {
-      return res.status(200).json({ tasks, message: "No available Tasks" });
+    // Build the query filter dynamically
+    const filter = { user: userId };
+    if (category) {
+      filter.category = category; // Add category filter only if provided
     }
-    res
-      .status(200)
-      .json({ tasks, message: "All tasks retrieved successfully" });
+
+    const tasks = await taskModel.find(filter);
+
+    if (tasks.length === 0) {
+      return res.status(200).json({
+        tasks,
+        message: category
+          ? "No tasks found for this category."
+          : "No available tasks.",
+      });
+    }
+
+    res.status(200).json({ tasks, message: "Tasks retrieved successfully." });
   } catch (error) {
     next(error);
   }
@@ -72,7 +84,7 @@ const update_a_task = async (req, res, next) => {
         message: "Access denied: You can only update your own tasks.",
       });
     }
-    // Update the book with the new details
+    // Update the task with the new details
     const updateTask = await taskModel.findByIdAndUpdate(id, updates, {
       new: true,
       runValidators: true,
@@ -97,7 +109,7 @@ const delete_a_task = async (req, res, next) => {
     }
     if (getTask.user.toString() !== userId.toString()) {
       return res.status(403).json({
-        message: "Access denied: You can only delete your own taskss.",
+        message: "Access denied: You can only delete your own tasks.",
       });
     }
     const deleteTask = await taskModel.findByIdAndDelete(id);
