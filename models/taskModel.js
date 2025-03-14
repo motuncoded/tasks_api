@@ -4,8 +4,7 @@ const taskModel = new mongoose.Schema({
   title: { type: String, required: true },
   description: { type: String },
   category: {
-    type: String,
-    enum: ["Work", "Personal", "Other"],
+    type: [String],
     required: true,
   },
   deadline: { type: Date },

@@ -8,14 +8,14 @@ const generateToken = require("../jwt/generateToken");
 
 const hashFunction = async (password) => {
   const salt = await bcrypt.genSalt(10);
-  return await bcrypt.hashSync(password, salt);
+  return bcrypt.hash(password, salt);
 };
 
 // Register a user
 const register = async (req, res, next) => {
   let { username, password, gmail } = req.body;
 
-  //to trim to remove spaces
+  //  Trim input fields
   username = username?.trim();
   gmail = gmail?.trim().toLowerCase();
 
@@ -60,13 +60,12 @@ const login = async (req, res, next) => {
         .json({ message: "Account not found, please register with us" });
     }
     //  Compare Hashed Passwords
-    const comparison = await bcrypt.compare(password, user.password);
-    if (!comparison) {
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+    if (!isPasswordValid) {
       return res.status(400).json({ message: "Password or gmail incorrect" });
     }
     //  Generate a JWT Token
     const token = generateToken(user._id);
-    console.log("Generated Token:", token);
     // Store the Token in Cookies
     res.cookie("token", token, {
       httpOnly: true,

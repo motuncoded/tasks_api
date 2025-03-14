@@ -11,8 +11,7 @@ deadlines, and mark tasks as complete or incomplete.
 - **Create Tasks:** Add new tasks with details such as title, description, due date, and priority.
 - **Update Tasks:** Modify existing tasks' details.
 - **Delete Tasks:** Remove tasks that are no longer needed.
-- **List Tasks:** Retrieve a list of all tasks, optionally filtered by status or priority.
-- **Task Status Management:** Mark tasks as completed or pending.
+
 
 ## 📚 API Documentation
 
