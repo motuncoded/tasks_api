@@ -1,134 +1,104 @@
-![Axia Africa](/axia_africa.png)
-
 # Task Management API
 
-Welcome to the Task Management API! This API allows users to create,
+Welcome to the Task Management API! T
+
+his API allows users to create,
 read, update, and delete tasks. Users are able to categorize tasks, set
 deadlines, and mark tasks as complete or incomplete.
 
 ## 🚀 Features
 
-- **Create Tasks:** Add new tasks with details such as title, description, due date, and priority.
-- **Update Tasks:** Modify existing tasks' details.
-- **Delete Tasks:** Remove tasks that are no longer needed.
-
+➢ **User registration and login**
+➢ **CRUD operations for tasks**
+➢ **Task categorization and deadlines**
+➢ **User-specific task management**
 
 ## 📚 API Documentation
 
 ### Base URL
 
 ```
-https://api.example.com/v1
+https://tasks-api-axia.vercel.app
 ```
 
 ### Endpoints
 
+#### User registration and login
+
+- **Register a user**
+
+Register users that want to create, list, update and delete tasks.
+
+```
+POST /api/user/register
+```
+
+- **Login a user**
+
+Login users that want to check and create more tasks.
+
+```
+POST /api/user/login
+```
+
+- **Logout a user**
+
+Users are allowed to logout.
+
+```
+POST /api/user/logout
+```
+
 #### Create a Task
 
+Users are able to create tasks
+
 ```
-POST /tasks
-```
-
-##### Request Body
-
-```json
-{
-  "title": "string",
-  "description": "string",
-  "due_date": "YYYY-MM-DD",
-  "priority": "low | medium | high"
-}
-```
-
-##### Response
-
-```json
-{
-  "id": "string",
-  "title": "string",
-  "description": "string",
-  "due_date": "YYYY-MM-DD",
-  "priority": "low | medium | high",
-  "status": "pending | completed",
-  "created_at": "YYYY-MM-DDTHH:MM:SSZ",
-  "updated_at": "YYYY-MM-DDTHH:MM:SSZ"
-}
+POST /api/task
 ```
 
 #### Update a Task
 
-```
-PUT /tasks/{id}
-```
+Users are able to update tasks
 
-##### Request Body
-
-```json
-{
-  "title": "string",
-  "description": "string",
-  "due_date": "YYYY-MM-DD",
-  "priority": "low | medium | high",
-  "status": "pending | completed"
-}
+```
+PUT /api/tasks/:id
 ```
 
-##### Response
+#### Get all tasks
 
-```json
-{
-  "id": "string",
-  "title": "string",
-  "description": "string",
-  "due_date": "YYYY-MM-DD",
-  "priority": "low | medium | high",
-  "status": "pending | completed",
-  "created_at": "YYYY-MM-DDTHH:MM:SSZ",
-  "updated_at": "YYYY-MM-DDTHH:MM:SSZ"
-}
+Users are able to get all tasks
+
+```
+GET /api/tasks
+```
+
+#### Get all tasks
+
+Users are able to get a task by id
+
+```
+GET /api/task/:id
 ```
 
 #### Delete a Task
 
-```
-DELETE /tasks/{id}
-```
-
-##### Response
-
-```json
-{
-  "message": "Task deleted successfully"
-}
-```
-
-#### List Tasks
+Users are able to delete a task
 
 ```
-GET /tasks
+DELETE /api/tasks/{id}
 ```
 
-##### Query Parameters
+
+
+
+
+<!-- ##### Query Parameters
 
 - `status` (optional): Filter tasks by status (`pending` or `completed`)
 - `priority` (optional): Filter tasks by priority (`low`, `medium`, `high`)
 
-##### Response
-
-```json
-[
-  {
-    "id": "string",
-    "title": "string",
-    "description": "string",
-    "due_date": "YYYY-MM-DD",
-    "priority": "low | medium | high",
-    "status": "pending | completed",
-    "created_at": "YYYY-MM-DDTHH:MM:SSZ",
-    "updated_at": "YYYY-MM-DDTHH:MM:SSZ"
-  }
-]
-```
+ -->
 
 ## 🛠️ Setup & Installation
 

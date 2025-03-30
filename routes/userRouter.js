@@ -6,7 +6,10 @@ const { register, login } = require("../controllers/userController");
 
 const userRouter = express
   .Router()
+  // register a user
   .post("/user/register", register)
-  .post("/user/login", login);
-
+  // login a user
+  .post("/user/login", login)
+  //logout a user
+  .post("/user/logout", logout);
 module.exports = userRouter;

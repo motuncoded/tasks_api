@@ -9,9 +9,7 @@ const create_a_task = async (req, res, next) => {
 
   try {
     if (!Array.isArray(category) || category.length === 0) {
-      return res
-        .status(400)
-        .json({ message: "Category is required" });
+      return res.status(400).json({ message: "Category is required" });
     }
 
     // Ensure categories are unique & lowercase
@@ -35,7 +33,6 @@ const create_a_task = async (req, res, next) => {
     next(error);
   }
 };
-
 
 // Get a task
 const get_a_task = async (req, res, next) => {
