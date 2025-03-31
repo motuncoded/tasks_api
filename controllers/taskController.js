@@ -1,8 +1,7 @@
 // Task Controller
 
 const taskModel = require("../models/taskModel");
-const { parse, formatISO, isValid } = require('date-fns');
-
+const { parse, formatISO, isValid } = require("date-fns");
 
 // Create a task
 const create_a_task = async (req, res, next) => {
@@ -10,12 +9,10 @@ const create_a_task = async (req, res, next) => {
   try {
     const newTask = await taskModel.create({ ...req.body, user: userId });
     res.status(201).json({ newTask, message: "Task created successfully" });
-  
   } catch (error) {
     next(error);
   }
 };
-
 
 // Get a task
 const get_a_task = async (req, res, next) => {
@@ -33,61 +30,62 @@ const get_a_task = async (req, res, next) => {
   }
 };
 
-
 //Get all tasks
 const get_all_tasks = async (req, res, next) => {
-
   const userId = req.user._id;
   const { category, deadline } = req.query;
 
   try {
     let filter = { user: userId };
-        if (category) {
-          filter.category = category;
-        }
+    if (category) {
+      filter.category = category;
+    }
 
-       if (deadline) {
-         const parsedDeadline = parse(deadline, "dd/MM/yyyy", new Date());
-         if (!isValid(parsedDeadline)) {
-           return res
-             .status(400)
-             .json({ message: "Invalid deadline format. Use DD/MM/YYYY." });
-         }
-         filter.deadline = {
-           $lte: formatISO(parsedDeadline),
-         };
-       }
+    if (deadline) {
+      const parsedDeadline = parse(deadline, "dd/MM/yyyy", new Date());
+      if (!isValid(parsedDeadline)) {
+        return res
+          .status(400)
+          .json({ message: "Invalid deadline format. Use DD/MM/YYYY." });
+      }
+      filter.deadline = {
+        $lte: formatISO(parsedDeadline),
+      };
+    }
     const tasks = await taskModel.find(filter);
-     if (tasks.length === 0) {
-       return res.status(404).json({ message: "No tasks found." });
-     }
-     
+    if (tasks.length === 0) {
+      return res.status(404).json({ message: "No tasks found." });
+    }
+
     res.status(200).json({
       tasks,
-      message: "Tasks retrieved successfully." 
+      message: "Tasks retrieved successfully.",
     });
   } catch (error) {
     next(error);
   }
 };
 
-
 const update_a_task = async (req, res, next) => {
- const { id } = req.params;
+  const { id } = req.params;
   const userId = req.user._id;
 
   try {
     const updatedTask = await taskModel.findOneAndUpdate(
       { _id: id, user: userId },
       req.body,
-      { new: true, runValidators: true }
+      { new: true, runValidators: true },
     );
 
     if (!updatedTask) {
-      return res.status(404).json({ message: "Task not found or unauthorized" });
+      return res
+        .status(404)
+        .json({ message: "Task not found or unauthorized" });
     }
 
-    res.status(200).json({ task: updatedTask, message: "Task updated successfully." });
+    res
+      .status(200)
+      .json({ task: updatedTask, message: "Task updated successfully." });
   } catch (error) {
     next(error);
   }
@@ -122,13 +120,10 @@ const delete_a_task = async (req, res, next) => {
   }
 };
 
-
-
 module.exports = {
   create_a_task,
   get_a_task,
   get_all_tasks,
   update_a_task,
   delete_a_task,
- 
 };
