@@ -44,15 +44,14 @@ Here is a table summarizing the endpoints:
 | /api/tasks/:id | Users are able to delete a task.    | DELETE |
 
 #### Task categorization and deadlines
+| Endpoint       | Description                         | Method |
+| -------------- | ----------------------------------- | ------ |
+| /api/tasks/:id | Users are able to update tasks.     | PUT    |
+| /api/tasks=     | Users are able to get all tasks.    | GET    |
+
 
 #### User-specific task management
 
-<!-- ##### Query Parameters
-
-- `status` (optional): Filter tasks by status (`pending` or `completed`)
-- `priority` (optional): Filter tasks by priority (`low`, `medium`, `high`)
-
- -->
 
 ## 🛠️ Setup & Installation
 
