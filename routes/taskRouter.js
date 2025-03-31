@@ -18,6 +18,7 @@ const taskRouter = express
   .post("/task", authHandler, create_a_task)
   //get all tasks
   .get("/tasks", authHandler, get_all_tasks)
+
   // get a task by id
   .get("/task/:id", authHandler, get_a_task)
   //update a task

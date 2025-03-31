@@ -25,73 +25,27 @@ https://tasks-api-axia.vercel.app
 
 #### User registration and login
 
-- **Register a user**
+Here is a table summarizing the endpoints:
 
-Register users that want to create, list, update and delete tasks.
+| Endpoint           | Description                                                         | Method |
+| ------------------ | ------------------------------------------------------------------- | ------ |
+| /api/user/register | Register users that want to create, list, update, and delete tasks. | POST   |
+| /api/user/login    | Login users that want to check and create more tasks.               | POST   |
+| /api/user/logout   | Users are allowed to logout.                                        | POST   |
 
-```
-POST /api/user/register
-```
+#### CRUD operation for tasks
 
-- **Login a user**
+| Endpoint       | Description                         | Method |
+| -------------- | ----------------------------------- | ------ |
+| /api/task      | Users are able to create tasks.     | POST   |
+| /api/tasks/:id | Users are able to update tasks.     | PUT    |
+| /api/tasks     | Users are able to get all tasks.    | GET    |
+| /api/task/:id  | Users are able to get a task by id. | GET    |
+| /api/tasks/:id | Users are able to delete a task.    | DELETE |
 
-Login users that want to check and create more tasks.
+#### Task categorization and deadlines
 
-```
-POST /api/user/login
-```
-
-- **Logout a user**
-
-Users are allowed to logout.
-
-```
-POST /api/user/logout
-```
-
-#### Create a Task
-
-Users are able to create tasks
-
-```
-POST /api/task
-```
-
-#### Update a Task
-
-Users are able to update tasks
-
-```
-PUT /api/tasks/:id
-```
-
-#### Get all tasks
-
-Users are able to get all tasks
-
-```
-GET /api/tasks
-```
-
-#### Get all tasks
-
-Users are able to get a task by id
-
-```
-GET /api/task/:id
-```
-
-#### Delete a Task
-
-Users are able to delete a task
-
-```
-DELETE /api/tasks/{id}
-```
-
-
-
-
+#### User-specific task management
 
 <!-- ##### Query Parameters
 
@@ -102,19 +56,21 @@ DELETE /api/tasks/{id}
 
 ## 🛠️ Setup & Installation
 
-1. Clone the repository:
+1. Fork this repository
+
+2. Clone the repository:
 
 ```sh
-git clone https://github.com/yourusername/task-management-api.git
+git clone https://github.com/username/task-management-api.git
 ```
 
-2. Navigate to the project directory:
+3. Navigate to the project directory:
 
 ```sh
 cd task-management-api
 ```
 
-3. Install dependencies:
+4. Install dependencies:
 
 ```sh
 npm install

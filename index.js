@@ -5,11 +5,13 @@ const cookieParser = require("cookie-parser");
 const connectdb = require("./config/dbController");
 const taskRouter = require("./routes/taskRouter");
 const app = express();
+const path = require("path");
 
 const port = process.env.PORT || 3000;
 
 require("dotenv").config();
 
+app.use(express.static(path.join(__dirname, "public")));
 // Connect to database
 connectdb();
 
@@ -19,8 +21,9 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 app.use(cookieParser());
 
+// Define a route to render the index.html
 app.get("/", (req, res) => {
-  res.send("Task Management system");
+  res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
 // Routes

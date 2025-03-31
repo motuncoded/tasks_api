@@ -8,22 +8,17 @@ const create_a_task = async (req, res, next) => {
   const userId = req.user._id;
 
   try {
-    if (!Array.isArray(category) || category.length === 0) {
+    if (!category) {
       return res.status(400).json({ message: "Category is required" });
     }
 
-    // Ensure categories are unique & lowercase
-    const formattedCategories = [
-      ...new Set(category.map((cat) => cat.toLowerCase())),
-    ];
-
     const newTask = new taskModel({
+      user: userId,
       title,
       description,
-      category: formattedCategories,
+      category: category.toLowerCase(),
       deadline,
       completed,
-      user: userId,
     });
 
     await newTask.save();
@@ -37,46 +32,45 @@ const create_a_task = async (req, res, next) => {
 // Get a task
 const get_a_task = async (req, res, next) => {
   const { id } = req.params;
-  const userId = req.user._id;
 
   try {
-    // Find the task by ID
-    const getTask = await taskModel.findOne({ _id: id, user: userId }); //Ensuring the user can only access their own task
-    if (!getTask) {
-      return res
-        .status(404)
-        .json({ message: "Task not found with the provided ID" });
+    const task = await taskModel.findById(id);
+    if (!task) {
+      return res.status(404).json({ message: "Task not found" });
     }
-
-    res.status(200).json({ getTask, message: "Task found successfully" });
+    res.status(200).json({ task, message: "Task retrieved successfully" });
   } catch (error) {
     next(error);
   }
 };
 
+//Get all tasks
 const get_all_tasks = async (req, res, next) => {
   const userId = req.user._id;
-  const { category } = req.query;
+  const { categories, deadline } = req.query;
 
   try {
-    // Build the query filter dynamically
     const filter = { user: userId };
-    if (category) {
-      filter.category = category; // Add category filter only if provided
+    // categories string is split by commas and trimmed of any extra spaces.
+    if (categories) {
+      const categoriesArray = categories
+        .split(",")
+        .map((category) => category.trim());
+      filter.category = { $in: categoriesArray };
     }
 
-    const tasks = await taskModel.find(filter);
-
-    if (tasks.length === 0) {
-      return res.status(200).json({
-        tasks,
-        message: category
-          ? "No tasks found for this category."
-          : "No available tasks.",
-      });
+    if (deadline) {
+      filter.deadline = {
+        $lte: parse(deadline, "dd/MM/yyyy", new Date()).toISOString(),
+      };
     }
-
-    res.status(200).json({ tasks, message: "Tasks retrieved successfully." });
+    const tasks = await taskModel.find(filter).populate("user");
+    res.status(200).json({
+      tasks,
+      message: tasks.length
+        ? "Tasks retrieved successfully."
+        : "No tasks found.",
+    });
   } catch (error) {
     next(error);
   }
